@@ -1,0 +1,203 @@
+:root {
+    --bamboo-primary: #6b8e7f;
+    --bamboo-light: #f5f3f0;
+    --bamboo-accent: #d4c5b9;
+    --bamboo-border: #e8e3de;
+    --bamboo-text: #4a4a48;
+    --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chatbox-wrapper {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9999;
+}
+
+/* Nút tròn mở chat */
+.chat-launcher {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--bamboo-primary);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbox-wrapper.is-open .chat-launcher {
+    transform: scale(0) rotate(90deg);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Container chính */
+.chatbox-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 380px;
+    height: 550px;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--bamboo-border);
+    overflow: hidden;
+    transform-origin: bottom right;
+    transition: var(--transition);
+}
+
+.chatbox-wrapper.is-closed .chatbox-container {
+    transform: scale(0.2);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Header */
+.chatbox-header {
+    background: var(--bamboo-primary);
+    padding: 15px 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header-actions button {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Messages */
+.chatbox-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: var(--bamboo-light);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message-bubble {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    max-width: 85%;
+    line-height: 1.5;
+}
+
+.message-ai .message-bubble {
+    background: white;
+    border-bottom-left-radius: 2px;
+    border: 1px solid var(--bamboo-border);
+}
+
+.message-user { align-self: flex-end; }
+.message-user .message-bubble {
+    background: var(--bamboo-primary);
+    color: white;
+    border-bottom-right-radius: 2px;
+}
+
+/* Input Area */
+.chatbox-input-form {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid var(--bamboo-border);
+}
+
+.input-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.message-input {
+    flex: 1;
+    border: 1px solid var(--bamboo-border);
+    padding: 8px 15px;
+    border-radius: 20px;
+    outline: none;
+}
+
+.send-btn {
+    background: var(--bamboo-primary);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Markdown styling inside bubble */
+.message-bubble strong { font-weight: 600; color: #2e4a3f; }
+.message-bubble ul { margin-left: 15px; }
+
+/* Image styling */
+.message-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+/* Thêm vào file ChatBox.css hiện tại của bạn */
+
+/* Markdown Styling */
+.message-bubble p {
+    margin: 0 0 8px 0;
+}
+.message-bubble p:last-child {
+    margin-bottom: 0;
+}
+.message-bubble ul, .message-bubble ol {
+    margin: 5px 0 10px 20px;
+    padding: 0;
+}
+.message-bubble li {
+    margin-bottom: 4px;
+}
+
+/* Typing Indicator Animation */
+.typing-indicator span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #6b8e7f;
+    border-radius: 50%;
+    margin: 0 2px;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+.typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+}
+
+/* Fix nút upload/send */
+.upload-btn, .send-btn {
+    display: flex; /* Căn giữa icon */
+    align-items: center;
+    justify-content: center;
+}

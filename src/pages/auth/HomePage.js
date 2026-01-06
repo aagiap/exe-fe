@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "../../assets/css/Home.css";
+import ChatBox from "../../components/chatbot/ChatBox";
 function HomePage() {
     const navigate = useNavigate();
     const token = getToken();
@@ -108,6 +109,7 @@ function HomePage() {
                 </section>
             ) : null}
 
+            <ChatBox/>
             <Footer />
         </>
     );
