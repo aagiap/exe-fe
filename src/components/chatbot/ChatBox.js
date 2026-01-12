@@ -127,7 +127,7 @@ export default function ChatBox() {
                 <div className="chat-header">
                     <div className="header-info">
                         <div className="chatbot-logo">🌿</div>
-                        <h2 className="logo-text">May É Bot</h2>
+                        <h2 className="logo-text">May É</h2>
                     </div>
                     <button id="close-chatbot" onClick={() => setIsExpanded(false)} title="Đóng" aria-label="Đóng chat">
                         <span className="material-symbols-rounded">keyboard_arrow_down</span>
