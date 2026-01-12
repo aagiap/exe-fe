@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import "../../assets/css/Home.css";
 import axios from "axios";
+import ChatBox from "../../components/chatbot/ChatBox";
 function HomePage() {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
