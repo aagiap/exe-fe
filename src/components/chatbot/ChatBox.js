@@ -13,7 +13,7 @@ export default function ChatBox() {
         {
             id: 1,
             role: "ai",
-            content: "Xin chào! 🌿 Mình là **May É**. Bạn cần tư vấn gì về đồ mây tre hôm nay ạ?",
+            content: "Xin chào! 🌿 Bạn cần tư vấn gì về đồ mây tre hôm nay ạ?",
         },
     ])
     const [input, setInput] = useState("")
