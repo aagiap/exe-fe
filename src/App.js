@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ViewProduct from "./pages/products/ViewProduct";
 import PublicRoute from "./routes/PublicRoute";
 import ProfilePage from "./pages/profile/ProfilePage";
+import ProductDetails from "./pages/products/ProductDetails";
 function App() {
     const token = getToken();
     return (
@@ -29,7 +30,7 @@ function App() {
                         }
                     />
                     <Route path="/products" element={<ViewProduct />} />
-
+                    <Route path="/products/:id" element={<ProductDetails />} />
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/" element={<Navigate to={token ? "/home" : "/login"} replace />} />
                     <Route path="*" element={<Navigate to="/" replace />} />

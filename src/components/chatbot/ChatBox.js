@@ -13,7 +13,7 @@ export default function ChatBox() {
         {
             id: 1,
             role: "ai",
-            content: "Xin chào! 🌿 Bạn cần tư vấn gì về đồ mây tre hôm nay ạ?",
+            content: "Xin chào! 🎋 Bạn cần tư vấn gì về đồ mây tre hôm nay ạ?",
         },
     ])
     const [input, setInput] = useState("")
@@ -126,8 +126,8 @@ export default function ChatBox() {
                 {/* Chat Header */}
                 <div className="chat-header">
                     <div className="header-info">
-                        <div className="chatbot-logo">🌿</div>
-                        <h2 className="logo-text">May É</h2>
+                        <div className="chatbot-logo">🐼</div>
+                        <h2 className="logo-text">MAYÉ</h2>
                     </div>
                     <button id="close-chatbot" onClick={() => setIsExpanded(false)} title="Đóng" aria-label="Đóng chat">
                         <span className="material-symbols-rounded">keyboard_arrow_down</span>
@@ -138,7 +138,7 @@ export default function ChatBox() {
                 <div className="chat-body" ref={chatBodyRef}>
                     {messages.map((msg) => (
                         <div key={msg.id} className={`message ${msg.role}-message`}>
-                            {msg.role === "ai" && <div className="bot-avatar">🤖</div>}
+                            {msg.role === "ai" && <div className="bot-avatar">🐼</div>}
                             <div className="message-bubble">
                                 <div className="message-text">
                                     <ReactMarkdown>{msg.content}</ReactMarkdown>
