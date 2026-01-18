@@ -1,0 +1,59 @@
+
+.custom-navbar {
+    min-height: 90px;
+}
+
+
+.nav-item-link {
+    padding: 30px 20px !important;
+    color: #555 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.nav-item-link:hover {
+    background-color: rgba(166, 196, 138, 0.1);
+    color: #A6C48A !important;
+}
+
+
+.dropdown-menu {
+    margin-top: 0 !important;
+    border: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    display: block !important;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(0);
+    transition: all 0.25s ease-in-out;
+    background-color: #fdfaf5;
+}
+
+.dropdown-menu.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.dropdown-item {
+    padding: 12px 25px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.85rem;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: #A6C48A;
+    color: darkolivegreen !important;
+    padding-left: 30px;
+}
+
+/* Ẩn mũi tên mặc định của Bootstrap để nhìn hiện đại hơn */
+.dropdown-toggle::after {
+    display: none;
+}
