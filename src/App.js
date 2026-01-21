@@ -13,6 +13,7 @@ import ViewProduct from "./pages/products/ViewProduct";
 import PublicRoute from "./routes/PublicRoute";
 import ProfilePage from "./pages/profile/ProfilePage";
 import ProductDetails from "./pages/products/ProductDetails";
+import Cart from "./pages/cart/Cart";
 function App() {
     const token = getToken();
     return (
@@ -38,7 +39,7 @@ function App() {
 
                     {/* USER routes */}
                     <Route path="/profile" element={<ProfilePage />} />
-
+                    <Route path="/cart" element={<Cart />} />
                     {/* STAFF routes */}
 
                     {/* ADMIN routes */}
