@@ -414,3 +414,54 @@
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
 }
+/* Container chứa nội dung HTML */
+.blog-detail-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+/* Xử lý ảnh trong bài viết */
+.blog-detail-body img {
+    max-width: 100%; /* Đảm bảo ảnh không to quá chiều ngang bài viết */
+    height: auto;    /* Giữ tỷ lệ ảnh */
+    display: block;
+    margin: 20px auto; /* Căn giữa ảnh */
+    border-radius: 8px; /* Bo góc nhẹ cho đẹp */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Xử lý các thẻ khác */
+.blog-detail-body h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #222;
+}
+
+.blog-detail-body ul, .blog-detail-body ol {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.blog-detail-body p {
+    margin-bottom: 15px;
+}
+
+/* Trong BlogAdmin.css */
+.col-images {
+    flex: 1; /* Hoặc width cụ thể */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.col-images img {
+    transition: transform 0.2s;
+    border: 1px solid #eee;
+}
+
+.col-images img:hover {
+    transform: scale(1.5); /* Phóng to nhẹ khi rê chuột vào ảnh nhỏ */
+    z-index: 10;
+}
