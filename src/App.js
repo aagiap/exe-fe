@@ -13,6 +13,9 @@ import ViewProduct from "./pages/products/ViewProduct";
 import PublicRoute from "./routes/PublicRoute";
 import ProfilePage from "./pages/profile/ProfilePage";
 import ProductDetails from "./pages/products/ProductDetails";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProductList from "./pages/admin/feature/AdminProductList";
+import AddNewProduct from "./pages/admin/feature/AddNewProduct";
 function App() {
     const token = getToken();
     return (
@@ -42,7 +45,9 @@ function App() {
                     {/* STAFF routes */}
 
                     {/* ADMIN routes */}
-
+                    <Route path="/admin/dashboard" element={<AdminDashboard/>} />
+                    <Route path="/admin/product-management" element={<AdminProductList />} />
+                    <Route path="/admin/add-new-product" element={<AddNewProduct/>}/>
                 </Routes>
             </Router>
         </AuthProvider>
