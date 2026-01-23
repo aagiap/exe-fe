@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import productManagerApi from "../../../api/ProductManagerApi";
 import {Link} from "react-router-dom";
+import api from "../../../api/api";
 import {BoxArrowRight, House, Speedometer2, ArrowReturnLeft} from "react-bootstrap-icons";
 
 const AddNewProduct = () => {
@@ -19,7 +20,9 @@ const AddNewProduct = () => {
         categoryName: ''
     });
 
-    const [galleryImageInput, setGalleryImageInput] = useState('');
+    const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
+    const [isUploadingGallery, setIsUploadingGallery] = useState(false);
+    const [uploadErrors, setUploadErrors] = useState({ thumbnail: '', gallery: '' });
     const [categories, setCategories] = useState([]);
     const [loadingCategories, setLoadingCategories] = useState(false);
     //state cho thumbnail preview
@@ -70,54 +73,109 @@ const AddNewProduct = () => {
     };
 
     // hàm xử lý upload thumbnail
-    const handleThumbnailUpload = (e) => {
+    const handleThumbnailUpload = async (e) => {
         const file = e.target.files[0];
-        if (file) {
-            // Nếu đã có thumbnail trước đó, revoke URL cũ
-            if (thumbnailPreview) {
-                URL.revokeObjectURL(thumbnailPreview);
-            }
+        if (!file) return;
 
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result;
-                setProduct(prev => ({ ...prev, thumbnail: base64String }));
-                setThumbnailPreview(URL.createObjectURL(file));
-            };
-            reader.readAsDataURL(file);
+        setIsUploadingThumbnail(true);
+        setUploadErrors(prev => ({ ...prev, thumbnail: '' }));
+
+        const data = new FormData();
+        data.append('file', file);
+        data.append("folder", "products"); // Thay "blog" bằng "products" hoặc folder phù hợp
+
+        try {
+            const response = await api.post('/media/upload', data);
+            const result = response.data;
+            const url = result.secure_url || result.url;
+
+            // Cập nhật thumbnail URL (không dùng base64 nữa)
+            setProduct(prev => ({ ...prev, thumbnail: url }));
+
+            // Tạo preview từ URL
+            setThumbnailPreview(url);
+        } catch (err) {
+            console.error("Thumbnail upload failed", err);
+            setUploadErrors(prev => ({
+                ...prev,
+                thumbnail: 'Lỗi upload ảnh chính'
+            }));
+        } finally {
+            setIsUploadingThumbnail(false);
+            if (thumbnailInputRef.current) thumbnailInputRef.current.value = '';
         }
     };
 
     // hàm xử lý thêm gallery images
-    const handleGalleryImagesUpload = (e) => {
+    const handleGalleryImagesUpload = async (e) => {
         const files = Array.from(e.target.files);
+        if (files.length === 0) return;
 
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64String = reader.result;
-                setProduct(prev => ({
+        setIsUploadingGallery(true);
+        setUploadErrors(prev => ({ ...prev, gallery: '' }));
+
+        const uploadedUrls = [];
+        const previewUrls = [];
+
+        try {
+            // Upload từng file và chờ tất cả hoàn thành
+            for (const file of files) {
+                const data = new FormData();
+                data.append('file', file);
+                data.append("folder", "products");
+
+                try {
+                    const response = await api.post('/media/upload', data);
+                    const result = response.data;
+                    const url = result.secure_url || result.url;
+
+                    uploadedUrls.push(url);
+                    // Tạo preview URL từ file local (tạm thời) hoặc dùng URL từ server
+                    previewUrls.push(URL.createObjectURL(file));
+                } catch (err) {
+                    console.error("Gallery image upload failed", err);
+                }
+            }
+
+            // Cập nhật state với tất cả URLs đã upload
+            setProduct(prev => ({
+                ...prev,
+                galleryImages: [...prev.galleryImages, ...uploadedUrls]
+            }));
+
+            // Cập nhật previews
+            setGalleryPreviews(prev => [...prev, ...previewUrls]);
+
+            if (uploadedUrls.length < files.length) {
+                setUploadErrors(prev => ({
                     ...prev,
-                    galleryImages: [...prev.galleryImages, base64String]
+                    gallery: `Đã upload ${uploadedUrls.length}/${files.length} ảnh`
                 }));
-
-                // Tạo preview URL
-                const previewUrl = URL.createObjectURL(file);
-                setGalleryPreviews(prev => [...prev, previewUrl]);
-            };
-            reader.readAsDataURL(file);
-        });
+            }
+        } catch (error) {
+            console.error("Error uploading gallery images", error);
+            setUploadErrors(prev => ({
+                ...prev,
+                gallery: 'Lỗi upload bộ ảnh'
+            }));
+        } finally {
+            setIsUploadingGallery(false);
+            if (galleryInputRef.current) galleryInputRef.current.value = '';
+        }
     };
 
     // Hàm xóa thumbnail
     const handleRemoveThumbnail = () => {
-        // Revoke object URL để tránh memory leak
-        if (thumbnailPreview) {
+        // Revoke object URL nếu là URL tạm thời
+        if (thumbnailPreview && thumbnailPreview.startsWith('blob:')) {
             URL.revokeObjectURL(thumbnailPreview);
         }
+
         // Reset thumbnail và preview
         setProduct(prev => ({ ...prev, thumbnail: '' }));
         setThumbnailPreview('');
+        setUploadErrors(prev => ({ ...prev, thumbnail: '' }));
+
         // Reset input file
         if (thumbnailInputRef.current) {
             thumbnailInputRef.current.value = '';
@@ -126,6 +184,12 @@ const AddNewProduct = () => {
 
     // hàm xóa gallery image
     const handleRemoveGalleryImage = (index) => {
+        // Revoke object URL nếu là URL tạm thời
+        if (galleryPreviews[index] && galleryPreviews[index].startsWith('blob:')) {
+            URL.revokeObjectURL(galleryPreviews[index]);
+        }
+
+        // Cập nhật state
         setProduct(prev => ({
             ...prev,
             galleryImages: prev.galleryImages.filter((_, i) => i !== index)
@@ -153,12 +217,26 @@ const AddNewProduct = () => {
         try {
             const response = await productManagerApi.addProduct(productData);
             console.log(response.data);
-        }catch (error) {
 
+            // Kiểm tra response và hiển thị thông báo
+            if (response.message === "success" || response.success) {
+                alert("Thêm sản phẩm thành công");
+                resetForm();
+            }
+        } catch (error) {
+            console.error('Error add new product:', error);
+
+            // Xử lý và hiển thị lỗi
+            if (error.response && error.response.data) {
+                const errorData = error.response.data;
+                alert(`Lỗi: ${errorData.message || 'Có lỗi xảy ra khi thêm sản phẩm'}`);
+            } else {
+                alert('Có lỗi xảy ra khi thêm sản phẩm');
+            }
         }
     };
 
-    // Thêm hàm reset form
+    // hàm reset form
     const resetForm = () => {
         // Reset product state
         setProduct({
@@ -175,16 +253,25 @@ const AddNewProduct = () => {
         });
 
         // Revoke và reset thumbnail preview
-        if (thumbnailPreview) {
+        if (thumbnailPreview && thumbnailPreview.startsWith('blob:')) {
             URL.revokeObjectURL(thumbnailPreview);
-            setThumbnailPreview('');
         }
+        setThumbnailPreview('');
 
         // Revoke và reset gallery previews
         galleryPreviews.forEach(preview => {
-            URL.revokeObjectURL(preview);
+            if (preview.startsWith('blob:')) {
+                URL.revokeObjectURL(preview);
+            }
         });
         setGalleryPreviews([]);
+
+        // Reset upload errors
+        setUploadErrors({ thumbnail: '', gallery: '' });
+
+        // Reset upload states
+        setIsUploadingThumbnail(false);
+        setIsUploadingGallery(false);
 
         // Reset input files
         if (thumbnailInputRef.current) {
@@ -330,52 +417,104 @@ const AddNewProduct = () => {
                         {/* Images */}
                         <Form.Group className="mb-3">
                             <Form.Label><strong>Ảnh chính</strong></Form.Label>
-                            <Form.Control
-                                type="file"
-                                accept="image/*"
-                                onChange={handleThumbnailUpload}
-                                ref={thumbnailInputRef}
-                                required={!product.thumbnail} // Chỉ required khi chưa có ảnh
-                            />
-                            {thumbnailPreview && (
-                                <div className="mt-2 position-relative" style={{ display: 'inline-block' }}>
-                                    <img
-                                        src={thumbnailPreview}
-                                        alt="Thumbnail preview"
-                                        style={{
-                                            maxWidth: '200px',
-                                            maxHeight: '200px',
-                                            objectFit: 'cover',
-                                            borderRadius: '8px'
-                                        }}
-                                    />
-                                    <Button
-                                        variant="danger"
-                                        size="sm"
-                                        className="position-absolute top-0 end-0"
-                                        style={{ transform: 'translate(30%, -30%)' }}
-                                        onClick={handleRemoveThumbnail}
+
+                            {/* Hiển thị lỗi upload thumbnail nếu có */}
+                            {uploadErrors.thumbnail && (
+                                <Alert variant="danger" className="py-1 mb-2">
+                                    {uploadErrors.thumbnail}
+                                </Alert>
+                            )}
+
+                            <div className="thumbnail-upload-container mb-2">
+                                <Form.Control
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleThumbnailUpload}
+                                    ref={thumbnailInputRef}
+                                    disabled={isUploadingThumbnail}
+                                    className="d-none"
+                                    id="thumbnail-upload"
+                                />
+
+                                {/* Nút upload thay thế */}
+                                {!product.thumbnail ? (
+                                    <Form.Label
+                                        htmlFor="thumbnail-upload"
+                                        className={`btn ${isUploadingThumbnail ? 'btn-secondary' : 'btn-outline-primary'} w-100`}
+                                        style={{ cursor: isUploadingThumbnail ? 'not-allowed' : 'pointer' }}
                                     >
-                                        ×
-                                    </Button>
-                                </div>
+                                        {isUploadingThumbnail ? 'Đang tải lên...' : '📷 Chọn ảnh chính'}
+                                    </Form.Label>
+                                ) : (
+                                    <div className="thumbnail-preview-wrapper" style={{ position: 'relative', display: 'inline-block' }}>
+                                        <img
+                                            src={thumbnailPreview}
+                                            alt="Thumbnail preview"
+                                            style={{
+                                                maxWidth: '200px',
+                                                maxHeight: '200px',
+                                                objectFit: 'cover',
+                                                borderRadius: '8px'
+                                            }}
+                                        />
+                                        <Button
+                                            variant="danger"
+                                            size="sm"
+                                            className="position-absolute top-0 end-0"
+                                            style={{ transform: 'translate(30%, -30%)' }}
+                                            onClick={handleRemoveThumbnail}
+                                            disabled={isUploadingThumbnail}
+                                        >
+                                            ×
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Hiển thị URL của thumbnail đã upload */}
+                            {product.thumbnail && (
+                                <Form.Text className="text-muted d-block mt-1">
+                                    URL: <small>{product.thumbnail.substring(0, 50)}...</small>
+                                </Form.Text>
                             )}
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label><strong>Bộ ảnh</strong></Form.Label>
-                            <Form.Control
-                                type="file"
-                                multiple
-                                accept="image/*"
-                                onChange={handleGalleryImagesUpload}
-                                className="mb-2"
-                            />
+
+                            {/* Hiển thị lỗi upload gallery nếu có */}
+                            {uploadErrors.gallery && (
+                                <Alert variant="warning" className="py-1 mb-2">
+                                    {uploadErrors.gallery}
+                                </Alert>
+                            )}
+
+                            <div className="gallery-upload-container mb-2">
+                                <Form.Control
+                                    type="file"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={handleGalleryImagesUpload}
+                                    ref={galleryInputRef}
+                                    disabled={isUploadingGallery}
+                                    className="d-none"
+                                    id="gallery-upload"
+                                />
+
+                                {/* Nút upload thay thế */}
+                                <Form.Label
+                                    htmlFor="gallery-upload"
+                                    className={`btn ${isUploadingGallery ? 'btn-secondary' : 'btn-outline-success'} w-100`}
+                                    style={{ cursor: isUploadingGallery ? 'not-allowed' : 'pointer' }}
+                                >
+                                    {isUploadingGallery ? 'Đang tải lên...' : '📸 Chọn nhiều ảnh'}
+                                </Form.Label>
+                            </div>
 
                             {/* Hiển thị gallery previews */}
                             {galleryPreviews.length > 0 && (
                                 <div className="mt-2">
-                                    <h6>Ảnh xem trước:</h6>
+                                    <h6>Ảnh xem trước ({product.galleryImages.length} ảnh):</h6>
                                     <Row className="g-2">
                                         {galleryPreviews.map((preview, index) => (
                                             <Col xs={4} md={3} key={index}>
@@ -397,6 +536,7 @@ const AddNewProduct = () => {
                                                         className="position-absolute top-0 end-0"
                                                         style={{ transform: 'translate(30%, -30%)' }}
                                                         onClick={() => handleRemoveGalleryImage(index)}
+                                                        disabled={isUploadingGallery}
                                                     >
                                                         ×
                                                     </Button>

@@ -92,7 +92,10 @@ const productManagerApi = {
                 Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(productRequest)
-        })
+        });
+        if (!res.ok) return null;
+        const json = await res.json();
+        return json;
     },
 
     delete: async (id) => {
