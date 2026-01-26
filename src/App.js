@@ -21,6 +21,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProductList from "./pages/admin/feature/AdminProductList";
 import AddNewProduct from "./pages/admin/feature/AddNewProduct";
 import ChangePassword from "./pages/auth/ChangePassword";
+import EditProduct from "./components/admin/navigate-view-or-edit/EditProduct";
+import AdminViewProduct from "./components/admin/navigate-view-or-edit/ViewProduct";
 function App() {
     const token = getToken();
     return (
@@ -58,6 +60,8 @@ function App() {
                     <Route path="/admin/dashboard" element={<AdminDashboard/>} />
                     <Route path="/admin/product-management" element={<AdminProductList />} />
                     <Route path="/admin/add-new-product" element={<AddNewProduct/>}/>
+                    <Route path="/admin/products/edit/:id" element={<EditProduct/>}/>
+                    <Route path="/admin/products/view/:id" element={<AdminViewProduct/>}/>
                 </Routes>
             </Router>
         </AuthProvider>
