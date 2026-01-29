@@ -70,11 +70,13 @@ const AdminDashboard = () => {
                                 <Col md={4}>
                                     <Card className="h-100">
                                         <Card.Body className="text-center">
-                                            <h6>Feature</h6>
-                                            <p className="text-muted small">Feature Description</p>
-                                            <Button variant="outline-success" size="sm">
-                                                View Feature
-                                            </Button>
+                                            <h6>Quản lý đơn hàng</h6>
+                                            <p className="text-muted small">Quản lý tình trạng đơn hàng</p>
+                                            <Link to={"/admin/order-management"}>
+                                                <Button variant="outline-success" size="sm">
+                                                    Hiện danh sách đơn hàng
+                                                </Button>
+                                            </Link>
                                         </Card.Body>
                                     </Card>
                                 </Col>

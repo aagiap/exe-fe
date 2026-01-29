@@ -16,6 +16,7 @@ const AdminHeader = () => {
     const isAdminProductManagement = location.pathname.includes("/admin/product-management");
     const isAdminEditProduct = location.pathname.includes("/admin/products/edit");
     const isAdminViewProduct = location.pathname.includes("/admin/products/view");
+    const isAdminOrderList = location.pathname.includes("/admin/order-management");
 
     const handleLogout = () => {
         logout();
@@ -31,12 +32,14 @@ const AdminHeader = () => {
                         {isAdminProductManagement ? "Quản lý sản phẩm" : ""}
                         {isAdminEditProduct ? "Chỉnh sửa sản phẩm" : ""}
                         {isAdminViewProduct ? "Chi tiết sản phẩm": ""}
+                        {isAdminOrderList ? "Quản lý đơn hàng" : ""}
                     </h2>
                     <p className="text-muted">
                         {isAdminDashboard ? "Quản lý hệ thống" : ""}
                         {isAdminAddNewProduct ? "Thêm sản phẩm mới cho hệ thống của bạn" : ""}
                         {isAdminProductManagement ? "Quản lý sản phẩm trong hệ thống của bạn" : ""}
                         {isAdminEditProduct ? "Chính sửa sản phẩm trong hệ thống của bạn" : ""}
+                        {isAdminOrderList ? "Quản lý tình trạng đơn hàng" : ""}
                     </p>
                 </Col>
                 <Col className="text-end">
