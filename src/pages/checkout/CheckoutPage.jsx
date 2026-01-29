@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-
+const API_URL = process.env.REACT_APP_API_URL;
 const CheckoutPage = ({ userProfile }) => {
     const location = useLocation();
     const navigate = useNavigate();

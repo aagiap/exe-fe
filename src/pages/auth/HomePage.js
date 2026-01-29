@@ -9,6 +9,7 @@ import BG from "../../assets/images/homebg.jpg";
 import "../../assets/css/Home.css";
 import axios from "axios";
 import ChatBox from "../../components/chatbot/ChatBox";
+const API_URL = process.env.REACT_APP_API_URL;
 function HomePage() {
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);

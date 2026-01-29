@@ -13,7 +13,7 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import '../../assets/css/ProductDetails.css';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const ProductDetail = () => {
     const {id} = useParams();
     const navigate = useNavigate();

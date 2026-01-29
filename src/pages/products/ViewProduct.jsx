@@ -9,7 +9,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-
+const API_URL = process.env.REACT_APP_API_URL;
 function ViewProduct() {
     const token = getToken();
     const navigate = useNavigate();

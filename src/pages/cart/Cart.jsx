@@ -6,7 +6,7 @@ import { FaTrash, FaChevronLeft, FaShoppingBasket, FaTruckMoving } from 'react-i
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import '../../assets/css/Cart.css';
-
+const API_URL = process.env.REACT_APP_API_URL;
 const Cart = () => {
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ const Cart = () => {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const axiosConfig = { headers: { 'Authorization': `Bearer ${token}` } };
-
+    const API_URL = process.env.REACT_APP_API_URL;
     const fetchCart = async () => {
         try {
             setLoading(true);
