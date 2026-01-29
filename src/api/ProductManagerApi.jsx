@@ -3,7 +3,7 @@ import {getToken} from "../utils/auth";
 const token  = getToken();
 const productManagerApi = {
     getAllProducts: async (page, size) => {
-        const res = await fetch("http://localhost:8080/api/admin/product-management/products?page=" + page + "&size=" + size, {
+        const res = await fetch("${API_URL}/admin/product-management/products?page=" + page + "&size=" + size, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -18,7 +18,7 @@ const productManagerApi = {
     },
 
     getCategories: async () => {
-        const res = await fetch("http://localhost:8080/api/admin/product-management/categories", {
+        const res = await fetch("${API_URL}/admin/product-management/categories", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const productManagerApi = {
     },
 
     searchProducts: async (filters ,page, size) => {
-        let api = "http://localhost:8080/api/admin/product-management/products/search?page=" + page + "&size=" + size;
+        let api = "${API_URL}/admin/product-management/products/search?page=" + page + "&size=" + size;
         Object.entries(filters).forEach(([key, value]) => {
             if(value !== ""){
                 api = api + "&" + key + "=" + value;
@@ -55,7 +55,7 @@ const productManagerApi = {
         if(product.active === true) {
             active = false;
         }
-        const res = await fetch(`http://localhost:8080/api/admin/product-management/products/updateIsActive/${product.id}?isActive=${active}`, {
+        const res = await fetch(`${API_URL}/admin/product-management/products/updateIsActive/${product.id}?isActive=${active}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const productManagerApi = {
         if(product.featured === true) {
             featured = false;
         }
-        const res = await fetch(`http://localhost:8080/api/admin/product-management/products/updateIsFeatured/${product.id}?isFeatured=${featured}`, {
+        const res = await fetch(`${API_URL}/admin/product-management/products/updateIsFeatured/${product.id}?isFeatured=${featured}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -85,7 +85,7 @@ const productManagerApi = {
     },
 
     addProduct: async (productRequest) => {
-        const res = await fetch("http://localhost:8080/api/admin/product-management/products", {
+        const res = await fetch("${API_URL}/admin/product-management/products", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -98,7 +98,7 @@ const productManagerApi = {
     },
 
     delete: async (id) => {
-        const res = await fetch(`http://localhost:8080/api/admin/product-management/products/${id}`, {
+        const res = await fetch(`${API_URL}/admin/product-management/products/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -111,7 +111,7 @@ const productManagerApi = {
     },
 
     getProductById: async (id) => {
-        const res = await fetch(`http://localhost:8080/api/admin/product-management/products/${id}`, {
+        const res = await fetch(`${API_URL}/admin/product-management/products/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -124,7 +124,7 @@ const productManagerApi = {
     },
 
     updateProduct: async (id, productRequest) => {
-        const res =  await fetch(`http://localhost:8080/api/admin/product-management/products/${id}`, {
+        const res =  await fetch(`${API_URL}/admin/product-management/products/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

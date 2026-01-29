@@ -29,7 +29,7 @@ const ProductDetail = () => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`http://localhost:8080/api/products/view/${id}`);
+                const response = await axios.get(`${API_URL}/products/view/${id}`);
                 if (response.data.success) {
                     setProduct(response.data.data);
                 }
@@ -56,7 +56,7 @@ const ProductDetail = () => {
             }
 
             const response = await axios.post(
-                `http://localhost:8080/api/cart/add`,
+                `${API_URL}/cart/add`,
                 null,
                 {
                     params: {

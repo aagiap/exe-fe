@@ -31,7 +31,7 @@ function ViewProduct() {
 
 
     useEffect(() => {
-        api.get("http://localhost:8080/api/categories")
+        api.get("${API_URL}/categories")
             .then(res => setCategories(res.data.data || []))
             .catch(err => console.error(err));
     }, []);
@@ -49,7 +49,7 @@ function ViewProduct() {
     const fetchProducts = async () => {
         setLoading(true);
         try {
-            const res = await api.get("http://localhost:8080/api/products/view", {
+            const res = await api.get("${API_URL}/products/view", {
                 params: {
                     keyword: searchParams.get("keyword") || "",
                     categoryId: searchParams.get("categoryId") || "",
@@ -95,7 +95,7 @@ function ViewProduct() {
     };
 
     const handleAddToCart = (productId) => {
-        axios.post("http://localhost:8080/api/cart/add", null, {
+        axios.post("${API_URL}/cart/add", null, {
             params: {productId, quantity: 1},
             headers: {Authorization: `Bearer ${token}`}
         })

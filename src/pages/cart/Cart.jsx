@@ -20,7 +20,7 @@ const Cart = () => {
     const fetchCart = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('http://localhost:8080/api/cart', axiosConfig);
+            const response = await axios.get('${API_URL}/api/cart', axiosConfig);
             if (response.data.success) {
                 setCart(response.data.data);
                 // Mặc định chọn tất cả khi mới load hoặc có thể để mảng rỗng []
@@ -73,7 +73,7 @@ const Cart = () => {
         setUpdatingId(productId);
         try {
             const response = await axios.put(
-                `http://localhost:8080/api/cart/item/${productId}`,
+                `${API_URL}/cart/item/${productId}`,
                 null,
                 { ...axiosConfig, params: { quantity: newQuantity } }
             );
@@ -88,7 +88,7 @@ const Cart = () => {
     const handleDeleteItem = async (productId) => {
         if (!window.confirm("Xóa sản phẩm này?")) return;
         try {
-            const response = await axios.delete(`http://localhost:8080/api/cart/item/${productId}`, axiosConfig);
+            const response = await axios.delete(`${API_URL}/cart/item/${productId}`, axiosConfig);
             if (response.data.success) {
                 setCart(response.data.data);
                 setSelectedIds(prev => prev.filter(id => id !== productId));

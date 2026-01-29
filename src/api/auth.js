@@ -2,7 +2,7 @@ import {getToken} from "../utils/auth";
 import api from "./api";
 
 export async function login(username, password) {
-    const response = await fetch("http://localhost:8080/api/auth/login", {
+    const response = await fetch("${API_URL}/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -20,7 +20,7 @@ export async function login(username, password) {
 
 export async function signup(username, password, email, fullName) {
     try {
-        const response = await fetch("http://localhost:8080/api/auth/registry", {
+        const response = await fetch("${API_URL}/auth/registry", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, email, fullName}),
@@ -40,7 +40,7 @@ export const getUser = async () => {
     console.log("token from localStorage:", token);
     if (!token) return null;
     try {
-        const res = await fetch("http://localhost:8080/api/users/me", {
+        const res = await fetch("${API_URL}/users/me", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

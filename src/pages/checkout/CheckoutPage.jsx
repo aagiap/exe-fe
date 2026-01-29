@@ -69,7 +69,7 @@ const CheckoutPage = ({ userProfile }) => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/api/orders/add', orderRequest, {
+            const response = await axios.post('${API_URL}/orders/add', orderRequest, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.data.success) {

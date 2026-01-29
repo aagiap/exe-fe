@@ -4,7 +4,7 @@ export const fetchUserProfile = async () => {
     const token = getToken();
     if (!token) return null;
 
-    const res = await fetch("http://localhost:8080/api/users/me", {
+    const res = await fetch("${API_URL}/users/me", {
         headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -18,7 +18,7 @@ export const updateUserProfile = async (payload) => {
     const token = getToken();
     if (!token) throw new Error("No token");
 
-    const res = await fetch("http://localhost:8080/api/users/me", {
+    const res = await fetch("${API_URL}/users/me", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

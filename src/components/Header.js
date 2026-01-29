@@ -134,7 +134,7 @@ export default function Header() {
     const [showUser, setShowUser] = useState(false);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/categories")
+        axios.get("${API_URL}/categories")
             .then(res => setCategories(res.data.data))
             .catch(err => console.error(err));
     }, []);
