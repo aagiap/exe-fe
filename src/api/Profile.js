@@ -1,10 +1,9 @@
 import { getToken } from "../utils/auth";
-const API_URL = process.env.REACT_APP_API_URL;
 export const fetchUserProfile = async () => {
     const token = getToken();
     if (!token) return null;
 
-    const res = await fetch("${API_URL}/users/me", {
+    const res = await fetch("https://exe-be-9wd4.onrender.com/api/users/me", {
         headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -18,7 +17,7 @@ export const updateUserProfile = async (payload) => {
     const token = getToken();
     if (!token) throw new Error("No token");
 
-    const res = await fetch("${API_URL}/users/me", {
+    const res = await fetch("https://exe-be-9wd4.onrender.com/api/users/me", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

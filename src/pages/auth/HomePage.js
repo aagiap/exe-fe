@@ -25,7 +25,7 @@ function HomePage() {
         navigate("/login");
     };
     useEffect(() => {
-        axios.get("${API_URL}/categories")
+        axios.get("https://exe-be-9wd4.onrender.com/api/categories")
             .then(res => setCategories(res.data.data))
             .catch(err => console.error(err));
     }, []);

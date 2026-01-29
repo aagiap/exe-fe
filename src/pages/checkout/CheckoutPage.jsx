@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-const API_URL = process.env.REACT_APP_API_URL;
 const CheckoutPage = ({ userProfile }) => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -69,7 +68,7 @@ const CheckoutPage = ({ userProfile }) => {
         };
 
         try {
-            const response = await axios.post('${API_URL}/orders/add', orderRequest, {
+            const response = await axios.post('https://exe-be-9wd4.onrender.com/api/orders/add', orderRequest, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.data.success) {

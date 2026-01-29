@@ -126,7 +126,6 @@ import axios from "axios";
 import Logo from "../assets/images/LOGO EXE.png";
 import "../assets/css/Header.css";
 import { FaShoppingCart } from 'react-icons/fa';
-const API_URL = process.env.REACT_APP_API_URL;
 export default function Header() {
     const navigate = useNavigate();
     const { user, logout } = useContext(AuthContext);
@@ -135,7 +134,7 @@ export default function Header() {
     const [showUser, setShowUser] = useState(false);
 
     useEffect(() => {
-        axios.get("${API_URL}/categories")
+        axios.get("https://exe-be-9wd4.onrender.com/api/categories")
             .then(res => setCategories(res.data.data))
             .catch(err => console.error(err));
     }, []);

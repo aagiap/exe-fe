@@ -31,7 +31,7 @@ function ViewProduct() {
 
 
     useEffect(() => {
-        api.get("${API_URL}/categories")
+        api.get("https://exe-be-9wd4.onrender.com/api/categories")
             .then(res => setCategories(res.data.data || []))
             .catch(err => console.error(err));
     }, []);
@@ -49,7 +49,7 @@ function ViewProduct() {
     const fetchProducts = async () => {
         setLoading(true);
         try {
-            const res = await api.get("${API_URL}/products/view", {
+            const res = await api.get("https://exe-be-9wd4.onrender.com/api/products/view", {
                 params: {
                     keyword: searchParams.get("keyword") || "",
                     categoryId: searchParams.get("categoryId") || "",
@@ -95,7 +95,7 @@ function ViewProduct() {
     };
 
     const handleAddToCart = (productId) => {
-        axios.post("${API_URL}/cart/add", null, {
+        axios.post("https://exe-be-9wd4.onrender.com/api/cart/add", null, {
             params: {productId, quantity: 1},
             headers: {Authorization: `Bearer ${token}`}
         })

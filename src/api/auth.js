@@ -1,8 +1,7 @@
 import {getToken} from "../utils/auth";
 import api from "./api";
-const API_URL = process.env.REACT_APP_API_URL;
 export async function login(username, password) {
-    const response = await fetch("${API_URL}/auth/login", {
+    const response = await fetch("https://exe-be-9wd4.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -20,7 +19,7 @@ export async function login(username, password) {
 
 export async function signup(username, password, email, fullName) {
     try {
-        const response = await fetch("${API_URL}/auth/registry", {
+        const response = await fetch("https://exe-be-9wd4.onrender.com/api/auth/registry", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password, email, fullName}),
@@ -40,7 +39,7 @@ export const getUser = async () => {
     console.log("token from localStorage:", token);
     if (!token) return null;
     try {
-        const res = await fetch("${API_URL}/users/me", {
+        const res = await fetch("https://exe-be-9wd4.onrender.com/api/users/me", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

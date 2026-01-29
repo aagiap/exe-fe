@@ -29,7 +29,7 @@ const ProductDetail = () => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get(`${API_URL}/products/view/${id}`);
+                const response = await axios.get(`https://exe-be-9wd4.onrender.com/api/products/view/${id}`);
                 if (response.data.success) {
                     setProduct(response.data.data);
                 }
@@ -56,7 +56,7 @@ const ProductDetail = () => {
             }
 
             const response = await axios.post(
-                `${API_URL}/cart/add`,
+                `https://exe-be-9wd4.onrender.com/api/cart/add`,
                 null,
                 {
                     params: {
