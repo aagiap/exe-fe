@@ -1,9 +1,13 @@
 import React from 'react';
 import './AboutUs.css';
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
 
 const AboutUs = () => {
     return (
-        <div className="about-container">
+        <>
+            <Header/>
+        <div className="about-container" style={{ marginTop: '100px' }}>
             {/* Phần giới thiệu đầu trang */}
             <section className="hero">
                 <h1>Nhà Mây Tre - MAYÉ</h1>
@@ -58,6 +62,8 @@ const AboutUs = () => {
                 <button className="cta-button">Khám Phá Sản Phẩm</button>
             </section>
         </div>
+            <Footer/>
+        </>
     );
 };
 
