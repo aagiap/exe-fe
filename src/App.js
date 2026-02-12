@@ -26,6 +26,7 @@ import AdminViewProduct from "./components/admin/navigate-view-or-edit/ViewProdu
 import Checkout from "./pages/checkout/CheckoutPage";
 import AdminOrderList from "./pages/admin/feature/AdminOrderList";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import AboutUs from "./pages/auth/AboutUs";
 function App() {
     const token = getToken();
 
@@ -46,6 +47,7 @@ function App() {
                     <Route path="/blogs" element={<BlogList />} />
                     <Route path="/blog/:id" element={<BlogDetail />} />
                     <Route path="/logout" element={<Logout />} />
+                    <Route path="/about-us" element={<AboutUs/>} />
 
                     <Route path="/" element={<Navigate to="/home" replace />} />
 
